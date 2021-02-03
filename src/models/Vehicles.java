@@ -3,6 +3,9 @@ package models;
 public abstract class Vehicles {
     private String idVehicle;
     private String manufacture;
+    private String idManu;
+    private String nameManu;
+    private String country;
     private String yearManu;
     private String owner;
 
@@ -14,6 +17,30 @@ public abstract class Vehicles {
         this.manufacture = manufacture;
         this.yearManu = yearManu;
         this.owner = owner;
+    }
+
+    public String getIdManu() {
+        return idManu;
+    }
+
+    public void setIdManu(String idManu) {
+        this.idManu = idManu;
+    }
+
+    public String getNameManu() {
+        return nameManu;
+    }
+
+    public void setNameManu(String nameManu) {
+        this.nameManu = nameManu;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getIdVehicle() {
@@ -55,7 +82,9 @@ public abstract class Vehicles {
 
     public String showInfor() {
         return "ID " + idVehicle +
-                ", Manufacture " + manufacture +
+                ", IDManu " + this.idManu +
+                ", NameManu "+ this.nameManu+
+                ", Country "+ this.country+
                 ", Year " + yearManu +
                 ", Owner by " + owner;
     }

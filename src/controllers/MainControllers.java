@@ -1,14 +1,13 @@
 package controllers;
 
-import commons.read_write.ReadAndWrite;
-import models.Car;
-import models.Motorcycle;
-import models.Truck;
+import commons.exception.NotFoundVehicleException;
+import commons.validation.vehicle_validation.*;
+import models.*;
 import services.CarManagement;
+import services.ManuManagement;
 import services.MotorcycleManagement;
 import services.TruckManagement;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,6 +21,7 @@ public class MainControllers {
     static CarManagement carManagement = new CarManagement();
     static TruckManagement truckManagement = new TruckManagement();
     static MotorcycleManagement motorcycleManagement = new MotorcycleManagement();
+    static ManuManagement manuManagement = new ManuManagement();
 
     private static void displayMainMenu() {
         while (true) {
@@ -94,6 +94,8 @@ public class MainControllers {
     }
 
     private static void addVehicle(int vehicleType) {
+        List<Manufacture> manuList = manuManagement.findAll();
+
         String idVehicle;
         String manufacture;
         String yearManu;
@@ -103,47 +105,91 @@ public class MainControllers {
         double payload;
         int wattage;
 
-        System.out.print("Enter Id : ");
-        idVehicle = scanner.nextLine();
+        do {
+            switch (vehicleType) {
+                case TRUCK:
+                    System.out.print("Enter Id (XXC-XXX.XX) : ");
+                    break;
+                case CAR:
+                    System.out.print("Enter Id (XXY-XXX.XX) : ");
+                    break;
+                case MOTORCYCLE:
+                    System.out.print("Enter Id (XX-YZ-XXX.XX) : ");
+                    break;
+            }
+            System.out.print("Enter Id : ");
+            idVehicle = scanner.nextLine();
+            if (!IdVehicleValidation.IdVehicleValidate(vehicleType,idVehicle)) {
+                System.out.println("Invalid ID");
+            }
+        } while (!IdVehicleValidation.IdVehicleValidate(vehicleType,idVehicle));
+        System.out.println("--LIST OF MANUFACTURE--");
+        int choiceManu;
+        manuManagement.showManu(manuList); // display list of manufacture from csv
 
-        System.out.print("Enter Manufacture : ");
-        manufacture = scanner.nextLine();
-        // cho nhap truoc da
-        System.out.print("Enter Year of Manufacture : ");
-        yearManu = scanner.nextLine();
+        do {
+            System.out.print("Choose a Manufacture : ");
+            choiceManu = Integer.parseInt(scanner.nextLine());
+            if (choiceManu < 1 || choiceManu > manuList.size()) {
+                System.out.println("Invalid Manufacture");
+            }
+        } while (choiceManu < 1 || choiceManu > manuList.size());
+        manufacture = manuList.get(choiceManu -1).toString(); // ghi vao file bang toString()
+
+        do {
+            System.out.print("Enter Year of Manufacture (1900-2020) : ");
+            yearManu = scanner.nextLine();
+            if (!YearManuValidation.yearValidate(yearManu)) {
+                System.out.println("Invalid Year");
+            }
+        } while (!YearManuValidation.yearValidate(yearManu));
         System.out.print("Owner by : ");
         owner = scanner.nextLine();
 
         switch (vehicleType) {
             case CAR:
-                System.out.print("Enter number of Seat : ");
-                numSeat = Integer.parseInt(scanner.nextLine());
-                System.out.print("Enter type of Car : ");
-                typeCar = scanner.nextLine();
+                do {
+                    System.out.print("Enter number of Seat (1-19) : ");
+                    numSeat = Integer.parseInt(scanner.nextLine());
+                    if (!NumSeatValidation.numSeatValidate(numSeat)) {
+                        System.out.println("Number of Seat Invalid");
+                    }
+                } while (!NumSeatValidation.numSeatValidate(numSeat));
+
+                typeCar = ((idVehicle.charAt(3) == 'A') ? "Tourist car" : "Coach");
 
                 Car car = new Car(idVehicle,manufacture,yearManu,owner,numSeat,typeCar);
                 carManagement.add(car);
                 //
                 break;
             case TRUCK:
-                System.out.print("Enter payload of Truck : ");
-                payload = Double.parseDouble(scanner.nextLine());
+                do {
+                    System.out.print("Enter payload of Truck ( > 0 T): ");
+                    payload = Double.parseDouble(scanner.nextLine());
+                    if (!PayloadValidation.payloadValidate(payload)) {
+                        System.out.println("Invalid Payload");
+                    }
+                } while (!PayloadValidation.payloadValidate(payload));
 
                 Truck truck = new Truck(idVehicle,manufacture,yearManu,owner,payload);
                 truckManagement.add(truck);
                 //
                 break;
             case MOTORCYCLE:
-                System.out.print("Enter the Wattage : ");
-                wattage = Integer.parseInt(scanner.nextLine());
+                do {
+                    System.out.print("Enter the Wattage (0 < W < 500) : ");
+                    wattage = Integer.parseInt(scanner.nextLine());
+                    if (!WattageValidation.wattageValidate(wattage)) {
+                        System.out.println("Invalid Wattage");
+                    }
+                } while (!WattageValidation.wattageValidate(wattage));
 
                 Motorcycle motorcycle = new Motorcycle(idVehicle,manufacture,yearManu,owner,wattage);
                 motorcycleManagement.add(motorcycle);
                 //
                 break;
-            case 4:
-                break;
             default:
+                System.out.println("IMPOSSIBLE");
                 break;
         }
     }
@@ -213,6 +259,91 @@ public class MainControllers {
     }
 
     private static void deleteVehicle() {
+        System.out.print("Enter a ID Vehicle you wanna delete : ");
+        String idDelete = scanner.nextLine();
+        try {
+            if (checkIdToDelete(idDelete) != null) {
+                int choiceDelete;
+                System.out.print("ARE YOU SURE?\t\t1. YES\t|\t2. NO\t: ");
+                choiceDelete = Integer.parseInt(scanner.nextLine());
+                switch (choiceDelete) {
+                    case 1:
+                        deleteID(idDelete);
+                        break;
+                    case 2:
+                        //back to main menu
+                        break;
+                    default:
+                        System.out.println("Failed");
+                        break;
+                }
+            } else  {
+                throw new NotFoundVehicleException("ID Vehicle NOT found!");
+            }
+        } catch (NotFoundVehicleException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void deleteID(String idDelete) {
+        List<Truck> listTruck = truckManagement.findAll();
+        List<Car> listCar = carManagement.findAll();
+        List<Motorcycle> listMoto = motorcycleManagement.findAll();
+        boolean flagDelete = true;
+
+        for(Truck truck :listTruck) {
+            if (truck.getIdVehicle().equals(idDelete)) {
+                listTruck.remove(truck);
+                flagDelete = false;
+                break;
+                //
+            }
+        }
+        for(Car car : listCar) {
+            if (car.getIdVehicle().equals(idDelete)) {
+                listCar.remove(car);
+                flagDelete = false;
+                break;
+                //
+            }
+        }
+        for(Motorcycle motorcycle : listMoto) {
+            if (motorcycle.getIdVehicle().equals(idDelete)) {
+                listMoto.remove(motorcycle);
+                flagDelete = false;
+                break;
+                //
+            }
+        }
+        if (!flagDelete) {
+            truckManagement.addAll(listTruck);
+            carManagement.addAll(listCar);
+            motorcycleManagement.addAll(listMoto);
+            System.out.println("Successfully delete ID "+idDelete);
+        }
+    }
+
+    private static Vehicles checkIdToDelete(String id) {
+        List<Truck> listTruck = truckManagement.findAll();
+        List<Car> listCar = carManagement.findAll();
+        List<Motorcycle> listMoto = motorcycleManagement.findAll();
+
+        for(Truck truck :listTruck) {
+            if (truck.getIdVehicle().equals(id)) {
+                return truck;
+            }
+        }
+        for(Car car : listCar) {
+            if (car.getIdVehicle().equals(id)) {
+                return car;
+            }
+        }
+        for(Motorcycle motorcycle : listMoto) {
+            if (motorcycle.getIdVehicle().equals(id)) {
+                return motorcycle;
+            }
+        }
+        return null;
     }
 
     public static void main(String[] args) {

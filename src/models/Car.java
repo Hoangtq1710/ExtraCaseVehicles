@@ -14,9 +14,14 @@ public class Car extends Vehicles {
     }
 
     public Car(String[] carInfo) {
-        super(carInfo[0],carInfo[1], carInfo[2],carInfo[3]);
-        this.numSeat = Integer.parseInt(carInfo[4]);
-        this.typeCar = carInfo[5];
+        this.setIdVehicle(carInfo[0]);
+        this.setIdManu(carInfo[1]);
+        this.setNameManu(carInfo[2]);
+        this.setCountry(carInfo[3]);
+        this.setYearManu(carInfo[4]);
+        this.setOwner(carInfo[5]);
+        this.numSeat = Integer.parseInt(carInfo[6]);
+        this.typeCar = carInfo[7];
     }
 
     public int getNumSeat() {
@@ -45,6 +50,6 @@ public class Car extends Vehicles {
         return "Car\n" +
                 super.showInfor() +
                 ", Num Seat " + this.numSeat +
-                ", Type of Car " + this.typeCar + "\n";
+                ", Type of Car " + this.typeCar;
     }
 }

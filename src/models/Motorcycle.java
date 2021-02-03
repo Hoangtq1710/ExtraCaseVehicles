@@ -12,8 +12,13 @@ public class Motorcycle extends Vehicles {
     }
 
     public Motorcycle(String[] motoInfo) {
-        super(motoInfo[0],motoInfo[1], motoInfo[2], motoInfo[3]);
-        this.wattage = Integer.parseInt(motoInfo[4]);
+        this.setIdVehicle(motoInfo[0]);
+        this.setIdManu(motoInfo[1]);
+        this.setNameManu(motoInfo[2]);
+        this.setCountry(motoInfo[3]);
+        this.setYearManu(motoInfo[4]);
+        this.setOwner(motoInfo[5]);
+        this.wattage = Integer.parseInt(motoInfo[6]);
     }
 
     public int getWattage() {
@@ -33,6 +38,6 @@ public class Motorcycle extends Vehicles {
     public String showInfor() {
         return "Motorcycle" + "\n" +
                 super.showInfor() +
-                ", Wattage " + wattage + "\n";
+                ", Wattage " + wattage;
     }
 }

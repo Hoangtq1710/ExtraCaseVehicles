@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ReadAndWrite<T> {
     static final String PATH = "G:/ExtraCaseExercise/src/data/";
-    public void writeVehicleToFile(String nameFile, List<T> list, boolean notOverride) {
+    public void writeToFile(String nameFile, List<T> list, boolean notOverride) {
         File file = new File(PATH+nameFile);
         BufferedWriter bufferedWriter = null;
         try {
@@ -34,7 +34,7 @@ public class ReadAndWrite<T> {
             }
         }
     }
-    public List<String[]> readVehicleFromFile(String nameFile) {
+    public List<String[]> readFromFile(String nameFile) {
         List<String[]> list = new ArrayList<>();
         File file = new File(PATH+nameFile);
         FileReader fileReader = null;

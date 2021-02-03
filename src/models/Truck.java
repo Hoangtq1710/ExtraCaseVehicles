@@ -1,7 +1,7 @@
 package models;
 
 public class Truck extends Vehicles {
-    private double payload; // trọng tải
+    private double payload; // trọng tải (T : ton)
 
     public Truck() {
     }
@@ -12,8 +12,13 @@ public class Truck extends Vehicles {
     }
 
     public Truck(String[] truckInfo) {
-        super(truckInfo[0],truckInfo[1],truckInfo[2],truckInfo[3]);
-        this.payload = Double.parseDouble(truckInfo[4]);
+        this.setIdVehicle(truckInfo[0]);
+        this.setIdManu(truckInfo[1]);
+        this.setNameManu(truckInfo[2]);
+        this.setCountry(truckInfo[3]);
+        this.setYearManu(truckInfo[4]);
+        this.setOwner(truckInfo[5]);
+        this.payload = Double.parseDouble(truckInfo[6]);
     }
 
     public double getPayload() {
@@ -33,6 +38,6 @@ public class Truck extends Vehicles {
     public String showInfor() {
         return "Truck\n" +
                 super.showInfor() +
-                ", Payload " + this.payload + "\n";
+                ", Payload " + this.payload;
     }
 }
