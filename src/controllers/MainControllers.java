@@ -184,11 +184,11 @@ public class MainControllers {
                     }
                 } while (!NumSeatValidation.numSeatValidate(numSeat));
 
-                typeCar = ((idVehicle.charAt(3) == 'A') ? "Tourist car" : "Coach");
+                typeCar = ((idVehicle.charAt(2) == 'A') ? "Tourist car" : "Coach");
 
                 Car car = new Car(idVehicle, manufacture.getNameManu(), yearManu, owner, numSeat, typeCar);
                 carManagement.add(car);
-                //
+
                 break;
             case TRUCK:
                 do {
@@ -208,7 +208,7 @@ public class MainControllers {
 
                 Truck truck = new Truck(idVehicle, manufacture.getNameManu(), yearManu, owner, payload);
                 truckManagement.add(truck);
-                //
+
                 break;
             case MOTORCYCLE:
                 do {
@@ -228,7 +228,7 @@ public class MainControllers {
 
                 Motorcycle motorcycle = new Motorcycle(idVehicle, manufacture.getNameManu(), yearManu, owner, wattage);
                 motorcycleManagement.add(motorcycle);
-                //
+
                 break;
             default:
                 System.out.println("IMPOSSIBLE");
