@@ -119,10 +119,10 @@ public class MainControllers {
             }
             System.out.print("Enter Id : ");
             idVehicle = scanner.nextLine();
-            if (!IdVehicleValidation.IdVehicleValidate(vehicleType,idVehicle)) {
+            if (!IdVehicleValidation.IdVehicleValidate(vehicleType, idVehicle)) {
                 System.out.println("Invalid ID");
             }
-        } while (!IdVehicleValidation.IdVehicleValidate(vehicleType,idVehicle));
+        } while (!IdVehicleValidation.IdVehicleValidate(vehicleType, idVehicle));
         System.out.println("--LIST OF MANUFACTURE--");
         int choiceManu;
         manuManagement.showManu(manuList); // display list of manufacture from csv
@@ -134,7 +134,7 @@ public class MainControllers {
                 System.out.println("Invalid Manufacture");
             }
         } while (choiceManu < 1 || choiceManu > manuList.size());
-        manufacture = manuList.get(choiceManu -1).toString(); // ghi vao file bang toString()
+        manufacture = manuList.get(choiceManu - 1).toString(); // ghi vao file bang toString()
 
         do {
             System.out.print("Enter Year of Manufacture (1900-2020) : ");
@@ -158,7 +158,7 @@ public class MainControllers {
 
                 typeCar = ((idVehicle.charAt(3) == 'A') ? "Tourist car" : "Coach");
 
-                Car car = new Car(idVehicle,manufacture,yearManu,owner,numSeat,typeCar);
+                Car car = new Car(idVehicle, manufacture, yearManu, owner, numSeat, typeCar);
                 carManagement.add(car);
                 //
                 break;
@@ -171,7 +171,7 @@ public class MainControllers {
                     }
                 } while (!PayloadValidation.payloadValidate(payload));
 
-                Truck truck = new Truck(idVehicle,manufacture,yearManu,owner,payload);
+                Truck truck = new Truck(idVehicle, manufacture, yearManu, owner, payload);
                 truckManagement.add(truck);
                 //
                 break;
@@ -184,7 +184,7 @@ public class MainControllers {
                     }
                 } while (!WattageValidation.wattageValidate(wattage));
 
-                Motorcycle motorcycle = new Motorcycle(idVehicle,manufacture,yearManu,owner,wattage);
+                Motorcycle motorcycle = new Motorcycle(idVehicle, manufacture, yearManu, owner, wattage);
                 motorcycleManagement.add(motorcycle);
                 //
                 break;
@@ -197,11 +197,11 @@ public class MainControllers {
     private static void showVehicle() {
         boolean flagShow = true;
         do {
-            System.out.println( "\n"+
-                    "1. Display Truck\n"+
-                    "2. Display Car\n"+
-                    "3. Display Motorcycle\n"+
-                    "4. Back\n"+
+            System.out.println("\n" +
+                    "1. Display Truck\n" +
+                    "2. Display Car\n" +
+                    "3. Display Motorcycle\n" +
+                    "4. Back\n" +
                     "5. Exit\n");
             int choiceShow;
             System.out.print("Your choice is : ");
@@ -226,7 +226,7 @@ public class MainControllers {
                     System.out.println("Failed");
                     break;
             }
-        }while (flagShow);
+        } while (flagShow);
     }
 
     private static void showVehi(int typeVehicle) {
@@ -234,24 +234,24 @@ public class MainControllers {
             case TRUCK:
                 List<Truck> listTruck = truckManagement.findAll();
                 int i = 1;
-                for(Truck truck : listTruck) {
-                    System.out.println(i+". "+truck.showInfor());
+                for (Truck truck : listTruck) {
+                    System.out.println(i + ". " + truck.showInfor());
                     i++;
                 }
                 break;
             case CAR:
                 List<Car> listCar = carManagement.findAll();
                 int j = 1;
-                for(Car car : listCar) {
-                    System.out.println(j+". "+car.showInfor());
+                for (Car car : listCar) {
+                    System.out.println(j + ". " + car.showInfor());
                     j++;
                 }
                 break;
             case MOTORCYCLE:
                 List<Motorcycle> listMotor = motorcycleManagement.findAll();
                 int k = 1;
-                for(Motorcycle motorcycle : listMotor) {
-                    System.out.println(k+". "+motorcycle.showInfor());
+                for (Motorcycle motorcycle : listMotor) {
+                    System.out.println(k + ". " + motorcycle.showInfor());
                     k++;
                 }
                 break;
@@ -277,7 +277,7 @@ public class MainControllers {
                         System.out.println("Failed");
                         break;
                 }
-            } else  {
+            } else {
                 throw new NotFoundVehicleException("ID Vehicle NOT found!");
             }
         } catch (NotFoundVehicleException e) {
@@ -291,35 +291,35 @@ public class MainControllers {
         List<Motorcycle> listMoto = motorcycleManagement.findAll();
         boolean flagDelete = true;
 
-        for(Truck truck :listTruck) {
+        for (Truck truck : listTruck) {
             if (truck.getIdVehicle().equals(idDelete)) {
                 listTruck.remove(truck);
+                truckManagement.addAll(listTruck);
                 flagDelete = false;
                 break;
                 //
             }
         }
-        for(Car car : listCar) {
+        for (Car car : listCar) {
             if (car.getIdVehicle().equals(idDelete)) {
                 listCar.remove(car);
+                carManagement.addAll(listCar);
                 flagDelete = false;
                 break;
                 //
             }
         }
-        for(Motorcycle motorcycle : listMoto) {
+        for (Motorcycle motorcycle : listMoto) {
             if (motorcycle.getIdVehicle().equals(idDelete)) {
                 listMoto.remove(motorcycle);
+                motorcycleManagement.addAll(listMoto);
                 flagDelete = false;
                 break;
                 //
             }
         }
         if (!flagDelete) {
-            truckManagement.addAll(listTruck);
-            carManagement.addAll(listCar);
-            motorcycleManagement.addAll(listMoto);
-            System.out.println("Successfully delete ID "+idDelete);
+            System.out.println("Successfully delete ID " + idDelete);
         }
     }
 
@@ -328,17 +328,17 @@ public class MainControllers {
         List<Car> listCar = carManagement.findAll();
         List<Motorcycle> listMoto = motorcycleManagement.findAll();
 
-        for(Truck truck :listTruck) {
+        for (Truck truck : listTruck) {
             if (truck.getIdVehicle().equals(id)) {
                 return truck;
             }
         }
-        for(Car car : listCar) {
+        for (Car car : listCar) {
             if (car.getIdVehicle().equals(id)) {
                 return car;
             }
         }
-        for(Motorcycle motorcycle : listMoto) {
+        for (Motorcycle motorcycle : listMoto) {
             if (motorcycle.getIdVehicle().equals(id)) {
                 return motorcycle;
             }

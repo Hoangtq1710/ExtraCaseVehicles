@@ -17,7 +17,11 @@ public class MotorcycleManagement implements CRUDInterfaces<Motorcycle> {
 
     @Override
     public void addAll(List<Motorcycle> list) {
-        readAndWrite.writeToFile("motorcycle.csv",list,false);
+        for(Motorcycle motorcycle : list) {
+            List<Motorcycle> listOne = new ArrayList<>();
+            listOne.add(motorcycle);
+            readAndWrite.writeToFile("motorcycle.csv",listOne,false);
+        }
     }
 
     @Override

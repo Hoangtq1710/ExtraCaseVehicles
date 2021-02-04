@@ -18,7 +18,11 @@ public class CarManagement implements CRUDInterfaces<Car> {
 
     @Override
     public void addAll(List<Car> list) {
-        readAndWrite.writeToFile("car.csv", list, false);
+        for(Car car : list) {
+            List<Car> listOne = new ArrayList<>();
+            listOne.add(car);
+            readAndWrite.writeToFile("car.csv",listOne,false);
+        }
     }
 
     @Override
