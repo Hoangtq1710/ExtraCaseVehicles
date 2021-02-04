@@ -31,8 +31,15 @@ public class MainControllers {
                     "3. Delete Vehicle\n" +
                     "0. Exit\n");
             int choiceMenu;
-            System.out.print("Your choice is : ");
-            choiceMenu = Integer.parseInt(scanner.nextLine());
+            while (true) {
+                try {
+                    System.out.print("Your choice is : ");
+                    choiceMenu = Integer.parseInt(scanner.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong format");
+                }
+            }
             switch (choiceMenu) {
                 case 1:
                     addNewVehicle();
@@ -66,10 +73,17 @@ public class MainControllers {
                     "2. Add New Car\n" +
                     "3. Add New Motorcycle\n" +
                     "4. Back\n" +
-                    "5. Exit\n");
+                    "0. Exit\n");
             int choiceAddVehicle;
-            System.out.print("Your choice is : ");
-            choiceAddVehicle = Integer.parseInt(scanner.nextLine());
+            while (true) {
+                try {
+                    System.out.print("Your choice is : ");
+                    choiceAddVehicle = Integer.parseInt(scanner.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong format");
+                }
+            }
             switch (choiceAddVehicle) {
                 case 1:
                     addVehicle(TRUCK);
@@ -83,7 +97,7 @@ public class MainControllers {
                 case 4:
                     flagAddVehi = false;
                     break;
-                case 5:
+                case 0:
                     System.exit(choiceAddVehicle);
                     break;
                 default:
@@ -97,7 +111,7 @@ public class MainControllers {
         List<Manufacture> manuList = manuManagement.findAll();
 
         String idVehicle;
-        String manufacture;
+        Manufacture manufacture;
         String yearManu;
         String owner;
         int numSeat;
@@ -128,13 +142,20 @@ public class MainControllers {
         manuManagement.showManu(manuList); // display list of manufacture from csv
 
         do {
-            System.out.print("Choose a Manufacture : ");
-            choiceManu = Integer.parseInt(scanner.nextLine());
+            while (true) {
+                try {
+                    System.out.print("Choose a Manufacture : ");
+                    choiceManu = Integer.parseInt(scanner.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong format");
+                }
+            }
             if (choiceManu < 1 || choiceManu > manuList.size()) {
                 System.out.println("Invalid Manufacture");
             }
         } while (choiceManu < 1 || choiceManu > manuList.size());
-        manufacture = manuList.get(choiceManu - 1).toString(); // ghi vao file bang toString()
+        manufacture = manuList.get(choiceManu - 1);
 
         do {
             System.out.print("Enter Year of Manufacture (1900-2020) : ");
@@ -149,8 +170,15 @@ public class MainControllers {
         switch (vehicleType) {
             case CAR:
                 do {
-                    System.out.print("Enter number of Seat (1-19) : ");
-                    numSeat = Integer.parseInt(scanner.nextLine());
+                    while (true) {
+                        try {
+                            System.out.print("Enter number of Seat (1-19) : ");
+                            numSeat = Integer.parseInt(scanner.nextLine());
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Wrong format");
+                        }
+                    }
                     if (!NumSeatValidation.numSeatValidate(numSeat)) {
                         System.out.println("Number of Seat Invalid");
                     }
@@ -158,33 +186,47 @@ public class MainControllers {
 
                 typeCar = ((idVehicle.charAt(3) == 'A') ? "Tourist car" : "Coach");
 
-                Car car = new Car(idVehicle, manufacture, yearManu, owner, numSeat, typeCar);
+                Car car = new Car(idVehicle, manufacture.getNameManu(), yearManu, owner, numSeat, typeCar);
                 carManagement.add(car);
                 //
                 break;
             case TRUCK:
                 do {
-                    System.out.print("Enter payload of Truck ( > 0 T): ");
-                    payload = Double.parseDouble(scanner.nextLine());
+                    while (true) {
+                        try {
+                            System.out.print("Enter payload of Truck ( > 0 T): ");
+                            payload = Double.parseDouble(scanner.nextLine());
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Wrong format");
+                        }
+                    }
                     if (!PayloadValidation.payloadValidate(payload)) {
                         System.out.println("Invalid Payload");
                     }
                 } while (!PayloadValidation.payloadValidate(payload));
 
-                Truck truck = new Truck(idVehicle, manufacture, yearManu, owner, payload);
+                Truck truck = new Truck(idVehicle, manufacture.getNameManu(), yearManu, owner, payload);
                 truckManagement.add(truck);
                 //
                 break;
             case MOTORCYCLE:
                 do {
-                    System.out.print("Enter the Wattage (0 < W < 500) : ");
-                    wattage = Integer.parseInt(scanner.nextLine());
+                    while (true) {
+                        try {
+                            System.out.print("Enter the Wattage (0 < W < 500) : ");
+                            wattage = Integer.parseInt(scanner.nextLine());
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Wrong format");
+                        }
+                    }
                     if (!WattageValidation.wattageValidate(wattage)) {
                         System.out.println("Invalid Wattage");
                     }
                 } while (!WattageValidation.wattageValidate(wattage));
 
-                Motorcycle motorcycle = new Motorcycle(idVehicle, manufacture, yearManu, owner, wattage);
+                Motorcycle motorcycle = new Motorcycle(idVehicle, manufacture.getNameManu(), yearManu, owner, wattage);
                 motorcycleManagement.add(motorcycle);
                 //
                 break;
@@ -202,10 +244,18 @@ public class MainControllers {
                     "2. Display Car\n" +
                     "3. Display Motorcycle\n" +
                     "4. Back\n" +
-                    "5. Exit\n");
+                    "0. Exit\n");
             int choiceShow;
-            System.out.print("Your choice is : ");
-            choiceShow = Integer.parseInt(scanner.nextLine());
+            while (true) {
+                try {
+                    System.out.print("Your choice is : ");
+                    choiceShow = Integer.parseInt(scanner.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong format");
+                }
+            }
+
             switch (choiceShow) {
                 case 1:
                     showVehi(TRUCK);
@@ -219,7 +269,7 @@ public class MainControllers {
                 case 4:
                     flagShow = false;
                     break;
-                case 5:
+                case 0:
                     System.exit(choiceShow);
                     break;
                 default:
@@ -264,8 +314,15 @@ public class MainControllers {
         try {
             if (checkIdToDelete(idDelete) != null) {
                 int choiceDelete;
-                System.out.print("ARE YOU SURE?\t\t1. YES\t|\t2. NO\t: ");
-                choiceDelete = Integer.parseInt(scanner.nextLine());
+                while (true) {
+                    try {
+                        System.out.print("ARE YOU SURE?\t\t1. YES\t|\t2. NO\t: ");
+                        choiceDelete = Integer.parseInt(scanner.nextLine());
+                        break;
+                    } catch (NumberFormatException e) {
+                        System.out.println("Wrong format");
+                    }
+                }
                 switch (choiceDelete) {
                     case 1:
                         deleteID(idDelete);

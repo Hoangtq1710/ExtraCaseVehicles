@@ -17,11 +17,7 @@ public class TruckManagement implements CRUDInterfaces<Truck> {
 
     @Override
     public void addAll(List<Truck> list) {
-        for(Truck truck : list) {
-            List<Truck> listOne = new ArrayList<>();
-            listOne.add(truck);
-            readAndWrite.writeToFile("truck.csv",listOne,false);
-        }
+        readAndWrite.writeToFile("truck.csv", list, false);
     }
 
     @Override

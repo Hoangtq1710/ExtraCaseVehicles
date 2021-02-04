@@ -17,11 +17,6 @@ public class ManuManagement implements CRUDInterfaces<Manufacture>{
 
     @Override
     public void addAll(List<Manufacture> list) {
-        for(Manufacture manufacture : list) {
-            List<Manufacture> listOne = new ArrayList<>();
-            listOne.add(manufacture);
-            readAndWrite.writeToFile("manufacture.csv",listOne,false);
-        }
 
     }
 

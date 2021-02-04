@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReadAndWrite<T> {
-    static final String PATH = "G:/ExtraCaseExercise/src/data/";
+    static final String PATH = "src/data/";
     public void writeToFile(String nameFile, List<T> list, boolean notOverride) {
         File file = new File(PATH+nameFile);
         BufferedWriter bufferedWriter = null;
